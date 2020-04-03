@@ -1,21 +1,29 @@
 # SNSVerifier
 
-**TODO: Add description**
+Verifies message from AWS SNS with certificate from `SigningCertUrl`.
+
+Description for verification can be found on [AWS docs](https://docs.aws.amazon.com/sns/latest/dg/sns-verify-signature-of-message.html).
+
+## Usage
+
+```elixir
+alias SNSVerifier, as: SNS
+
+iex(1)> SNS.verify_message(message)
+:ok
+
+iex(1)> SNS.verify_message(invalid_message)
+{:error, "message"}
+```
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `sns_verifier` to your list of dependencies in `mix.exs`:
+The package can be installed by adding `sns_verifier` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:sns_verifier, "~> 0.1.0"}
+    {:sns_verifier, git: "https://github.com/sevenmind/sns_verifier.git"}
   ]
 end
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/sns_verifier](https://hexdocs.pm/sns_verifier).
-

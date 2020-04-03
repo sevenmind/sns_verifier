@@ -1,7 +1,9 @@
 defmodule SNSVerifier do
   @moduledoc """
-  Documentation for SnsVerifier.
+  Verifies SNS message with public key from `SigningCertUrl`.
+
   """
+
   alias SNSVerifier.PublicKey
 
   @confirmation_params [
@@ -15,40 +17,26 @@ defmodule SNSVerifier do
   ]
   @notification_params ["Message", "MessageId", "Subject", "Timestamp", "TopicArn", "Type"]
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> SNSVerifier.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
-
+  @spec verify_message(map()) :: :ok | {:error, any}
   def verify_message(message_params) do
     with message <- convert_lambda_message(message_params),
          {:ok, public_key} <- PublicKey.get(message["SigningCertURL"]) do
-
       message_params
       |> get_string_to_sign()
       |> verify(message_params["Signature"], public_key)
     else
       error ->
-        IO.inspect(error, label: "ERROR fak")
         error
     end
   end
 
-  def convert_lambda_message(%{"SigningCertUrl" => cert_url} = message) do
+  defp convert_lambda_message(%{"SigningCertUrl" => cert_url} = message) do
     message
     |> Map.delete("SigningCertUrl")
     |> Map.put("SigningCertURL", cert_url)
   end
 
-  def convert_lambda_message(message), do: message
+  defp convert_lambda_message(message), do: message
 
   defp get_string_to_sign(message_params) do
     message_params
