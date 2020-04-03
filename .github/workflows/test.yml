@@ -22,6 +22,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-mix-deps-
 
-      - run: mix local.rebar --force
       - run: mix deps.get
+      - run: mix deps.compile
+
       - run: mix test 
