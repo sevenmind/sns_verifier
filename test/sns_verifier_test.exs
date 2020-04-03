@@ -5,6 +5,10 @@ defmodule SNSVerifierTest do
     setup [:add_verify_message]
 
     test "fails if http request fails", %{verify_message: message} do
+      Mox.defmock(HttpMock, for: HTTPoison.Base)
+
+      Application.put_env(:sns_verifier, :http_client, HttpMock)
+
       Mox.expect(HttpMock, :request, fn :get, _url ->
         {:error, %{status_code: 400, body: "Not found"}}
       end)
