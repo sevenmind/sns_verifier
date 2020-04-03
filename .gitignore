@@ -23,3 +23,4 @@ erl_crash.dump
 sns_verifier-*.tar
 
 /.elixir_ls/
+.tool-versions
