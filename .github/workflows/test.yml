@@ -15,12 +15,11 @@ jobs:
           otp-version: 21.3.8
           elixir-version: 1.7.0
       - uses: actions/cache@v1
-        name: cache / mix deps
         with:
           path: deps
-          key: ${{ runner.os }}-mix-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+          key: ${{ runner.os }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
           restore-keys: |
-            ${{ runner.os }}-mix-deps-
+            ${{ runner.os }}-mix-
 
       - run: mix deps.get
       - run: mix deps.compile
